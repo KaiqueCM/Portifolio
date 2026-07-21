@@ -86,4 +86,3 @@ function loadImageWithCandidates(imgId, candidates) {
 }
 
 loadImageWithCandidates('profile-img', ['img/perfil.webp','img/perfil.jpg','img/perfil.png','img/perfil.jpeg','img/perfil.svg']);
-loadImageWithCandidates('banner-img', ['img/banner.webp','img/banner.jpg','img/banner.png','img/banner.svg']);
