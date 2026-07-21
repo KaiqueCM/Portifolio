@@ -377,6 +377,9 @@ body::before {
   border: 1px solid rgba(255, 255, 255, 0.08);
   box-shadow: 0 20px 40px rgba(0, 0, 0, 0.18);
   backdrop-filter: blur(15px);
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+  word-break: break-word;
 }
 
 .service-card,
@@ -523,6 +526,21 @@ body::before {
     font-size: 0.95rem;
   }
 
+  .card,
+  .project-card,
+  .skill-card,
+  .service-card,
+  .contact-card,
+  .stat-card {
+    padding: 1.2rem;
+    overflow: hidden;
+  }
+
+  .service-card,
+  .stat-card {
+    min-height: auto;
+  }
+
   .contact-card {
     padding: 0.8rem;
   }
@@ -540,6 +558,11 @@ body::before {
   }
 
   .about-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .about-cards,
+  .service-grid {
     grid-template-columns: 1fr;
   }
 
