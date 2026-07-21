@@ -541,6 +541,20 @@ body::before {
     min-height: auto;
   }
 
+  .stat-card strong {
+    font-size: 1rem;
+    margin-bottom: 0.6rem;
+    display: block;
+  }
+
+  .stat-card p {
+    font-size: 0.85rem !important;
+    line-height: 1.5;
+    margin: 0;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+  }
+
   .contact-card {
     padding: 0.8rem;
   }
