@@ -2,6 +2,11 @@
 const year = document.getElementById('year');
 const typedText = document.getElementById('typed-text');
 const typedWords = ['Ethical Hacker', 'Pentester', 'Cybersecurity', 'Dev em evolução'];
+const obfuscatedLinks = {
+  email: 'bWFpbHRvOmthaXF1ZWNhYnJhbDg2NkBnbWFpbC5jb20=',
+  whatsapp: 'aHR0cHM6Ly93YS5tZS81NTEzOTkyMDIzMzI5',
+  linkedin: 'aHR0cHM6Ly93d3cubGlua2VkaW4uY29tL2luL2thaXF1ZS1jYWJyYWwtbW91cmEtYjg0NjYwMjE5'
+};
 let typedWordIndex = 0;
 let typedCharIndex = 0;
 
@@ -42,6 +47,29 @@ if (typedText) {
   typeLoop();
 }
 
+function decodeBase64(value) {
+  const bytes = Uint8Array.from(atob(value), (char) => char.charCodeAt(0));
+  return new TextDecoder().decode(bytes);
+}
+
+function applyObfuscatedLinks() {
+  const emailLink = document.getElementById('email-link');
+  const whatsappLink = document.getElementById('whatsapp-link');
+  const linkedinLink = document.getElementById('linkedin-link');
+
+  if (emailLink) {
+    emailLink.href = decodeBase64(obfuscatedLinks.email);
+  }
+
+  if (whatsappLink) {
+    whatsappLink.href = decodeBase64(obfuscatedLinks.whatsapp);
+  }
+
+  if (linkedinLink) {
+    linkedinLink.href = decodeBase64(obfuscatedLinks.linkedin);
+  }
+}
+
 document.addEventListener('mousemove', (event) => {
   if (!cursorGlow) return;
   const x = event.clientX;
@@ -65,24 +93,22 @@ const observer = new IntersectionObserver(
 
 revealItems.forEach((item) => observer.observe(item));
 
-year.textContent = new Date().getFullYear();
+applyObfuscatedLinks();
 
-// Carregamento condicional de imagens: tenta várias extensões/nomes até encontrar uma imagem existente
-function loadImageWithCandidates(imgId, candidates) {
-  const el = document.getElementById(imgId);
-  if (!el || !candidates || candidates.length === 0) return;
-
-  let i = 0;
-  function tryNext() {
-    if (i >= candidates.length) return; // nada encontrado
-    const url = candidates[i++];
-    const test = new Image();
-    test.onload = () => { el.src = url; };
-    test.onerror = () => { tryNext(); };
-    test.src = url;
-  }
-
-  tryNext();
+if (year) {
+  year.textContent = new Date().getFullYear();
 }
 
-loadImageWithCandidates('profile-img', ['img/perfil.webp','img/perfil.jpg','img/perfil.png','img/perfil.jpeg','img/perfil.svg']);
+function loadProtectedImage(imgId) {
+  const el = document.getElementById(imgId);
+  if (!el) return;
+
+  if (window.profileImageEncodedHex) {
+    const bytes = Uint8Array.from(window.profileImageEncodedHex.match(/.{1,2}/g) || [], (hex) => parseInt(hex, 16) ^ 7);
+    const blob = new Blob([bytes], { type: 'image/webp' });
+    const url = URL.createObjectURL(blob);
+    el.src = url;
+  }
+}
+
+loadProtectedImage('profile-img');
